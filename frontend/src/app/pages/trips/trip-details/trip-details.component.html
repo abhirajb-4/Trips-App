@@ -1,0 +1,13 @@
+<div class="bg-white p-2 m-4 shadow-lg" *ngIf="trip">
+  <h2>{{ trip.tripInfo.tripName }}</h2>
+  <h3>Boarding Point: {{ trip.tripInfo.boardingPoint }}</h3>
+  <h3>Destination: {{ trip.tripInfo.destination }}</h3>
+  <h3>Cost: {{ trip.tripInfo.cost }}</h3>
+  <h3>Start Date: {{ trip.tripSchedule.startDate }}</h3>
+  <h3>End Date: {{ trip.tripSchedule.endDate }}</h3>
+  <h3>Bus Number: {{ trip.busDetails.busNumber }}</h3>
+  <h3>Contact: {{ trip.contactPerson.name }} - {{ trip.contactPerson.phone }}</h3>
+</div>
+
+
+

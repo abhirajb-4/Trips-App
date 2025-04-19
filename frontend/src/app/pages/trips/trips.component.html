@@ -1,0 +1,7 @@
+<div class="bg-white flex justify-center items-center gap-4 p-5">
+
+    @for (trip of trips; track trip.id ) {
+        <app-trip-card [trip]="trip"/>
+    }
+
+</div>
