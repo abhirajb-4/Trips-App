@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +9,21 @@ import { Observable } from 'rxjs';
 export class TripService {
   private apiUrl = 'http://localhost:5000/api/trips';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+    private authService: AuthService
+  ) {}
+
+  private getHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
 
   createTrip(trip: any): Observable<any> {
-    return this.http.post(this.apiUrl, trip);
+    return this.http.post(this.apiUrl, trip, {
+      headers: this.getHeaders()
+    });
   }
 
   getTrips(): Observable<any> {

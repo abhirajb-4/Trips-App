@@ -2,22 +2,29 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const authRoutes = require('./routes/auth');
+const createAdmin = require('./utils/createAdmin');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/api/auth', authRoutes);
 
 // Routes
 const tripRoutes = require('./routes/trips');
 app.use('/api/trips', tripRoutes);
 
+
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log("MongoDB connected"))
+}).then(() => {
+  console.log("MongoDB connected");
+  createAdmin();
+  })
   .catch(err => console.error("MongoDB error:", err));
 
 // Start server

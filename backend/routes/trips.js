@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Trip = require('../models/Trip');
+const { auth, isAdmin } = require('../middlewares/auth');
 
 // Create new trip
-router.post('/', async (req, res) => {
+router.post('/', auth, isAdmin,async (req, res) => {
   try {
     const trip = new Trip(req.body);
     await trip.save();

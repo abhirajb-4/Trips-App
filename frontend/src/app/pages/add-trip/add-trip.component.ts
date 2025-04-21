@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TripService } from '../../services/trip.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-add-trip',
@@ -16,7 +16,7 @@ export class AddTripComponent {
   tripService =inject(TripService);
   tripForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.tripForm = this.fb.group({
       tripInfo: this.fb.group({
         tripName: ['', Validators.required],
@@ -76,7 +76,7 @@ export class AddTripComponent {
           this.tripForm.reset();
           this.step = 0;
           // Optionally, navigate to another page:
-          // this.router.navigate(['/trips']);
+          this.router.navigate(['/admin/dashboard']);
         },
         error: (err) => {
           console.error('Error creating trip:', err);
