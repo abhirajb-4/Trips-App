@@ -7,6 +7,10 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { UserComponent } from './pages/user/user.component';
+import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { UserGuard } from './guards/user.guard';
+import { RegisterComponent } from './pages/register/register.component';
 
 export const routes: Routes = [
     {
@@ -16,7 +20,8 @@ export const routes: Routes = [
     },
     {
         path:'add-trip',
-        component : AddTripComponent
+        component : AddTripComponent,
+        canActivate:[AuthGuard,AdminGuard]
     },
     {
         path:'trips',
@@ -40,10 +45,16 @@ export const routes: Routes = [
     },
     {
         path:'admin/dashboard',
-        component:AdminComponent
+        component:AdminComponent,
+        canActivate:[AuthGuard,AdminGuard]
     },
     {
         path:'user/dashboard',
-        component:UserComponent
+        component:UserComponent,
+        canActivate:[AuthGuard,UserGuard]
+    },
+    {
+        path:'register',
+        component:RegisterComponent,
     }
 ];

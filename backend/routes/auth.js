@@ -9,8 +9,8 @@ const SECRET = 'your_jwt_secret';
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { username, password, role } = req.body;
-    const user = new User({ username, password, role });
+    const { username,email ,password, role } = req.body;
+    const user = new User({ username, email,password, role });
     await user.save();
     res.status(201).json({ message: 'User registered' });
   } catch (err) {

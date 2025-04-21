@@ -18,6 +18,10 @@ const tripSchema = new mongoose.Schema({
     endDate: String,
     endTime: String,
     capacity: Number,
+    enrolled: {
+      type: Number,
+      default: 0
+    }
   },
   busDetails: {
     busType: String,

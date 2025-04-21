@@ -7,6 +7,7 @@ const { auth, isAdmin } = require('../middlewares/auth');
 router.post('/', auth, isAdmin,async (req, res) => {
   try {
     const trip = new Trip(req.body);
+    trip.tripSchedule.enrolled = 0;
     await trip.save();
     res.status(201).json(trip);
   } catch (err) {

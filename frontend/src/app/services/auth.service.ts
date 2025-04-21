@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://localhost:5000/api/auth'; // Update if needed
+  private apiUrl = 'http://localhost:5000/api/auth'; 
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,10 @@ export class AuthService {
   }
 
   getToken() {
-    return localStorage.getItem('token');
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 
   isAdmin(): boolean {

@@ -7,7 +7,8 @@ const createAdmin = async () => {
     if (!existingAdmin) {
       const admin = new User({
         username: 'admin',
-        password: 'admin123', // auto-hashed in User model
+        email:'admin@gmail.com',
+        password: 'admin123', 
         role: 'admin'
       });
       await admin.save();
