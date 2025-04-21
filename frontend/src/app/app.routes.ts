@@ -26,4 +26,5 @@ export const routes: Routes = [
         path:'view-trip/:id',
         component:TripDetailsComponent
     }
+    
 ];
