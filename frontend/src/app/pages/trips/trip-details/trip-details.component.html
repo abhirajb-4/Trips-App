@@ -1,13 +1,50 @@
-<div class="bg-white p-2 m-4 shadow-lg" *ngIf="trip">
-  <h2>{{ trip.tripInfo.tripName }}</h2>
-  <h3>Boarding Point: {{ trip.tripInfo.boardingPoint }}</h3>
-  <h3>Destination: {{ trip.tripInfo.destination }}</h3>
-  <h3>Cost: {{ trip.tripInfo.cost }}</h3>
-  <h3>Start Date: {{ trip.tripSchedule.startDate }}</h3>
-  <h3>End Date: {{ trip.tripSchedule.endDate }}</h3>
-  <h3>Bus Number: {{ trip.busDetails.busNumber }}</h3>
-  <h3>Contact: {{ trip.contactPerson.name }} - {{ trip.contactPerson.phone }}</h3>
+<div class="bg- white m-0 p-md-5">
+<h4 class="mb-3">Trip details</h4>
+
+<div class="card mb-3">
+  <div class="card-header">Trip Info</div>
+  <div class="card-body">
+    <p><strong>Name:</strong> {{ trip.tripInfo.tripName }}</p>
+    <p><strong>Boarding Point:</strong> {{ trip.tripInfo.boardingPoint }}</p>
+    <p><strong>Destination:</strong> {{ trip.tripInfo.destination }}</p>
+    <p><strong>Cost:</strong> ₹{{ trip.tripInfo.cost }}</p>
+  </div>
 </div>
 
+<div class="card mb-3">
+  <div class="card-header">Trip Schedule</div>
+  <div class="card-body">
+    <p><strong>Start:</strong> {{ trip.tripSchedule.startDate }} {{ trip.tripSchedule.startTime }}</p>
+    <p><strong>End:</strong> {{ trip.tripSchedule.endDate }} {{ trip.tripSchedule.endTime }}</p>
+    <p><strong>Capacity:</strong> {{ trip.tripSchedule.capacity }}</p>
+  </div>
+</div>
 
+<div class="card mb-3">
+  <div class="card-header">Bus Details</div>
+  <div class="card-body">
+    <p><strong>Type:</strong> {{ trip.busDetails.busType }}</p>
+    <p><strong>Number:</strong> {{ trip.busDetails.busNumber }}</p>
+  </div>
+</div>
 
+<div class="card mb-3">
+  <div class="card-header">Contact Person</div>
+  <div class="card-body">
+    <p><strong>Name:</strong> {{ trip.contactPerson.name }}</p>
+    <p><strong>Phone:</strong> {{ trip.contactPerson.phone }}</p>
+  </div>
+</div>
+
+<div class="card mb-3" *ngIf="trip.schedule?.length">
+  <div class="card-header">Trip Schedule Stops</div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item" *ngFor="let sch of trip.schedule; let i = index">
+      <strong>{{ i + 1 }}.</strong> {{ sch.time }} → {{ sch.destination }}
+    </li>
+  </ul>
+</div>
+</div>
+<div class="text-center mt-4">
+  <button class="btn btn-success px-4" (click)="bookNow()">Book Now</button>
+</div>

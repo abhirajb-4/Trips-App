@@ -1,8 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TripService } from './../../../services/trip.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   imports: [CommonModule, ReactiveFormsModule],
@@ -15,6 +16,8 @@ export class TripDetailsComponent implements OnInit {
 
   tripService = inject(TripService);
   constructor(
+    private authService: AuthService,
+     private router: Router,
     private route: ActivatedRoute,
     
   ) {}
@@ -33,4 +36,20 @@ export class TripDetailsComponent implements OnInit {
       });
     }
   }
+  bookNow() {
+    if (this.authService.isLoggedIn()) {
+      const tripId = this.route.snapshot.paramMap.get('id');
+      if(tripId){
+      console.log('Booking trip...');
+      this.tripService.bookTrip(tripId).subscribe({
+        next: res => alert('Trip booked!'),
+        error: err => alert('Booking failed')
+      });
+    }
+      // example: this.tripService.enrollToTrip(this.trip.id).subscribe(...)
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
+  
 }
