@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { error } from 'node:console';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,16 @@ export class TripService {
       headers: this.getHeaders()
     });
   }
+
+  getMyTrips(): Observable<any> {
+    return this.http.get(`${this.enrollUrl}/my-trips`, {
+      headers: this.getHeaders()
+    }).pipe(catchError(error => {
+      console.error(error);
+      throw error;
+    }));
+    
+  }
+
   
 }

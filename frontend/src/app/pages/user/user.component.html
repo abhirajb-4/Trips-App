@@ -1,13 +1,38 @@
 <!-- Hero Section with Search -->
 <section class="hero d-flex align-items-center text-dark text-center">
-    <div class="container">
-      <h1 class="display-4 fw-bold">Welcome User</h1>
-      <p class="lead mb-4">Book a trip ... and EnjoY</p>
-  
-    
-      <div class="m-2">
-        <button class="btn btn-outline-dark btn-lg" routerLink="/trips">BooK NoW</button>
+  <div class="container">
+    <h1 class="display-4 fw-bold">Welcome User</h1>
+    <p class="lead mb-4">Book a trip ... and EnjoY</p>
+    <div class="m-2">
+      <button class="btn btn-outline-dark btn-lg" routerLink="/trips">BooK NoW</button>
+    </div>
+  </div>
+</section>
+
+<!-- Enrolled Trips Section -->
+<section class="enrolled-trips py-5 bg-light text-center">
+  <div class="container">
+    <h2 class="mb-4">My Enrolled Trips</h2>
+
+    <div *ngIf="trips && trips.length > 0; else noTrips">
+      <div class="row">
+        <div class="col-md-4 mb-4" *ngFor="let trip of trips">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">{{ trip.tripInfo.tripName }}</h5>
+              <p class="card-text">
+                <strong>Destination:</strong> {{ trip.tripInfo.destination }}<br>
+                <strong>Date:</strong> {{ trip.tripSchedule.startDate | date }} to {{ trip.tripSchedule.endDate | date }}<br>
+                <strong>Price:</strong> ₹{{ trip.tripInfo.cost }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
-  
+
+    <ng-template #noTrips>
+      <p class="text-muted">You have not enrolled in any trips yet.</p>
+    </ng-template>
+  </div>
+</section>
