@@ -102,7 +102,18 @@ export class BookingComponent implements OnInit {
   }
 
   submitBooking(paymentResponse: any): void {
-    const user = JSON.parse(localStorage.getItem('user') || '');
+    // Safely get and parse user data
+    const userData = localStorage.getItem('token');
+    let user = { id: '', name: '', email: '' }; // Default empty user
+    
+    try {
+      if (userData) {
+        user = JSON.parse(userData);
+      }
+    } catch (e) {
+      console.error('Error parsing user data:', e);
+    }
+  
     const payload = {
       user: {
         id: user.id,
@@ -113,10 +124,13 @@ export class BookingComponent implements OnInit {
       booking: this.bookingForm.value,
       tripId: this.trip._id
     };
-    console.log(payload);
+  
     this.bookingService.confirmBooking(payload).subscribe({
       next: () => alert('Booking confirmed!'),
-      error: () => alert('Payment verification failed')
+      error: (err) => {
+        console.error('Booking error:', err);
+        alert('Payment verification failed');
+      }
     });
   }
   

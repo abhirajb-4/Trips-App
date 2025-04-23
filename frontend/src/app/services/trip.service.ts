@@ -32,7 +32,6 @@ export class TripService {
     return this.http.get(this.apiUrl);
   }
   getTripById(id: string): Observable<any> {
-    console.log(id);
     return this.http.get(`${this.apiUrl}/${id}`);
   }
   bookTrip(tripId: string): Observable<any> {
