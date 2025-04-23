@@ -2,14 +2,21 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TripService } from '../../services/trip.service';
 import { CommonModule } from '@angular/common';
+import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-user',
-  imports: [RouterLink,CommonModule],
+  imports: [RouterLink, CommonModule, SidebarComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
 export class UserComponent {
+  
+  sidebarOpen = true;
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
   trips: any[] = [];
   constructor(private tripService: TripService) {}
 

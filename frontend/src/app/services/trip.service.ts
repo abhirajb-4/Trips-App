@@ -35,11 +35,6 @@ export class TripService {
     console.log(id);
     return this.http.get(`${this.apiUrl}/${id}`);
   }
-  bookTrip(tripId: string): Observable<any> {
-    return this.http.post(`${this.enrollUrl}/book/${tripId}`, {}, {
-      headers: this.getHeaders()
-    });
-  }
 
   getMyTrips(): Observable<any> {
     return this.http.get(`${this.enrollUrl}/my-trips`, {
