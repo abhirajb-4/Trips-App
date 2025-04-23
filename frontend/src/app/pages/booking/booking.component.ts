@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } fr
 import { ActivatedRoute } from '@angular/router';
 import { TripService } from '../../services/trip.service';
 import { CommonModule } from '@angular/common';
+import { BookingService } from '../../services/booking.service';
 
 @Component({
   selector: 'app-booking',
@@ -17,6 +18,8 @@ export class BookingComponent implements OnInit {
   costPerPassenger = 0;
 
   tripService = inject(TripService);
+  bookingService = inject(BookingService);
+
 
   constructor(
     private fb: FormBuilder,
@@ -82,7 +85,7 @@ export class BookingComponent implements OnInit {
       description: 'Trip Payment',
       handler: (response: any) => {
         // After successful payment, handle the response and submit to backend
-        console.log(response);
+        //console.log(response);
         this.submitBooking(response); // Send booking + payment response to backend
       },
       prefill: {
@@ -98,8 +101,23 @@ export class BookingComponent implements OnInit {
     rzp.open();
   }
 
-  submitBooking(paymentResponse: any) {
-    // Send booking details and payment info to backend here
-    console.log('Booking submitted:', this.bookingForm.value, paymentResponse);
+  submitBooking(paymentResponse: any): void {
+    const user = JSON.parse(localStorage.getItem('user') || '');
+    const payload = {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      },
+      payment: paymentResponse,
+      booking: this.bookingForm.value,
+      tripId: this.trip._id
+    };
+    console.log(payload);
+    this.bookingService.confirmBooking(payload).subscribe({
+      next: () => alert('Booking confirmed!'),
+      error: () => alert('Payment verification failed')
+    });
   }
+  
 }
