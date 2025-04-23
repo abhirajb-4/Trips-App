@@ -8,8 +8,12 @@
   <div class="flex-grow-1 p-4">
     <!-- Toggle Button -->
     <button class="btn btn-outline-dark mb-3" (click)="toggleSidebar()">
-      <span *ngIf="!sidebarOpen" style="font-size: 1.5rem;">&#9776;</span>  <!-- Hamburger (≡) -->
-      <span *ngIf="sidebarOpen" style="color: red; font-size: 1.5rem;">&#10006;</span> <!-- Cross (✖) -->
+      @if (!sidebarOpen) {
+        <i class="fas fa-bars fa-lg"></i> 
+      }
+      @else {
+        <i  class="fas fa-times fa-lg text-danger"></i>
+      }
     </button>
     
 

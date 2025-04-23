@@ -1,22 +1,25 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TripService } from '../../services/trip.service';
 import { CommonModule } from '@angular/common';
+import { BookingService } from '../../services/booking.service';
 
 @Component({
   selector: 'app-booking',
-  imports: [CommonModule,ReactiveFormsModule],
+  imports:[ReactiveFormsModule,CommonModule],
   templateUrl: './booking.component.html',
-  styleUrl: './booking.component.css'
+  styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit {
-
   bookingForm: FormGroup;
-  trip :any;
-  tripService = inject(TripService);
+  trip: any;
   availableSeats = 0;
   costPerPassenger = 0;
+
+  tripService = inject(TripService);
+  bookingService = inject(BookingService);
+
 
   constructor(
     private fb: FormBuilder,
@@ -31,15 +34,16 @@ export class BookingComponent implements OnInit {
     const tripId = this.route.snapshot.paramMap.get('id');
     if (tripId) {
       this.tripService.getTripById(tripId).subscribe({
-        next: ((data) => {this.trip = data;
-                      this.costPerPassenger = this.trip.tripInfo.cost;
-                      this.availableSeats = this.trip.tripSchedule.capacity - this.trip.tripSchedule.enrolled;
-                      console.log(this.costPerPassenger,this.availableSeats);
-        }),
+        next: (data) => {
+          this.trip = data;
+          this.costPerPassenger = this.trip.tripInfo.cost;
+          this.availableSeats = this.trip.tripSchedule.capacity - this.trip.tripSchedule.enrolled;
+        },
         error: (err) => console.error('Error fetching trip:', err)
       });
     }
   }
+
   get passengers(): FormArray {
     return this.bookingForm.get('passengers') as FormArray;
   }
@@ -48,12 +52,13 @@ export class BookingComponent implements OnInit {
     if (this.passengers.length < this.availableSeats) {
       const passenger = this.fb.group({
         name: ['', Validators.required],
-        age: ['', [Validators.required, Validators.min(1),Validators.max(100)]],
-        phno: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+        age: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+        phno: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
       });
       this.passengers.push(passenger);
     }
   }
+  
 
   removePassenger(index: number): void {
     this.passengers.removeAt(index);
@@ -62,18 +67,90 @@ export class BookingComponent implements OnInit {
   totalCost(): number {
     return this.passengers.length * this.costPerPassenger;
   }
-  isFullbooked(): boolean {
-    console.log(this.passengers.length > this.availableSeats)
-    return this.passengers.length == this.availableSeats;
-  }
+
   isOverbooked(): boolean {
     return this.passengers.length > this.availableSeats;
   }
-  submit():void{
-    if (this.bookingForm.valid && !this.isOverbooked()) {
-      console.log('Booking submitted:', this.bookingForm.value);
-      // You can add your booking logic here (e.g., API call)
-    }
+  isFullyBooked(): boolean {
+    return this.passengers.length == this.availableSeats;
   }
 
+  // Method to trigger Razorpay payment
+  // payNow(): void {
+  //   const options: any = {
+  //     key: 'rzp_test_Va99OvjJU36gup', // Replace with your Razorpay Test Key ID
+  //     amount: this.totalCost() * 100, // Razorpay expects amount in paisa
+  //     currency: 'INR',
+  //     name: 'Bus Booking',
+  //     description: 'Trip Payment',
+  //     handler: (response: any) => {
+  //       // After successful payment, handle the response and submit to backend
+  //       const paymentResponse = {
+  //         razorpay_payment_id: response.razorpay_payment_id,
+  //         // razorpay_order_id: response.razorpay_order_id,
+  //         // razorpay_signature: response.razorpay_signature
+  //       };
+  //       console.log(paymentResponse);
+  //       this.submitBooking(paymentResponse);// Send booking + payment response to backend
+  //     },
+  //     prefill: {
+  //       name: this.passengers.at(0).value.name,
+  //       contact: this.passengers.at(0).value.phno
+  //     },
+  //     theme: {
+  //       color: '#3399cc'
+  //     }
+  //   };
+
+  //   const rzp = new (window as any).Razorpay(options);
+  //   rzp.open();
+  // }
+  payNow(): void {
+    const amount = this.totalCost();
+  
+    // Call backend to create order
+    this.bookingService.createOrder({ amount }).subscribe(order => {
+      const options: any = {
+        key: 'rzp_test_Va99OvjJU36gup',
+        amount: order.amount,
+        currency: order.currency,
+        name: 'Bus Booking',
+        description: 'Trip Payment',
+        order_id: order.id, // << Important: use this!
+        handler: (response: any) => {
+          const paymentResponse = {
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature
+          };
+          this.submitBooking(paymentResponse);
+        },
+        prefill: {
+          name: this.passengers.at(0).value.name,
+          contact: this.passengers.at(0).value.phno
+        },
+        theme: { color: '#3399cc' }
+      };
+  
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+    });
+  }
+  
+
+  submitBooking(paymentResponse: any): void {
+    
+    const payload = {
+      payment: paymentResponse,
+      booking: this.bookingForm.value,
+      tripId: this.trip._id
+    };
+    this.bookingService.confirmBooking(payload).subscribe({
+      next: () => alert('Booking confirmed!'),
+      error: (err) => {
+        console.error('Booking error:', err);
+        alert('Payment verification failed');
+      }
+    });
+  }
 }

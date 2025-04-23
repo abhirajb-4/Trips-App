@@ -47,8 +47,7 @@ export const routes: Routes = [
     {
         path:'admin/dashboard',
         component:AdminComponent,
-        canActivate:[AuthGuard,AdminGuard],
-
+        canActivate:[AuthGuard,AdminGuard]
     },
     {
         path:'user/dashboard',
@@ -60,8 +59,9 @@ export const routes: Routes = [
         component:RegisterComponent,
     },
     {
-        path:"book-trip/:id",
-        canActivate:[AuthGuard,UserGuard,],
-        component:BookingComponent
-    }
+        path: 'book-trip/:id',
+        component: BookingComponent
+      }
+      
+    
 ];
