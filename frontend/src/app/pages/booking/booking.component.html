@@ -1,0 +1,45 @@
+<div class="container bg-white p-2" *ngIf="trip">
+    <h4 class="mb-2">Add passengers</h4>
+  
+    <form [formGroup]="bookingForm" (ngSubmit)="payNow()">
+      <div formArrayName="passengers">
+        <div *ngFor="let passenger of passengers.controls; let i = index" [formGroupName]="i" class="card mb-3">
+          <div class="card-body row align-items-end">
+            <div class="col-md-5">
+              <label>Name</label>
+              <input class="form-control" formControlName="name" required>
+            </div>
+            <div class="col-md-2">
+              <label>Age</label>
+              <input class="form-control" formControlName="age" type="number" required>
+            </div>
+            <div class="col-md-3">
+                <label>Phone number</label>
+                <input class="form-control" formControlName="phno" type="string" required>
+              </div>
+            <div class="col-md-2 text-end">
+              <button type="button" class="btn btn-danger mt-4" (click)="removePassenger(i)">−</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <button type="button" class="btn btn-outline-primary" (click)="addPassenger()" [disabled]="isOverbooked()">+ Add Passenger</button>
+        <h5>Total: ₹{{ totalCost() }}</h5>
+      </div>
+  
+      <div class="text-center">
+        <button class="btn btn-success px-4" type="submit"  [disabled]="isOverbooked() || !bookingForm.valid">
+          Pay ₹{{ totalCost() }}
+        </button>
+      </div>
+  
+      @if(isFullyBooked()){
+        <div class="text-danger text-center mt-2">
+           Thank You For FillinG the SeAtS 
+        </div>
+      }
+    </form>
+  </div>
+  

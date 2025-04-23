@@ -1,16 +1,38 @@
-<!-- Hero Section with Search -->
-<section class="hero d-flex align-items-center text-dark text-center">
-    <div class="container">
-      <h1 class="display-4 fw-bold">Welcome Admin</h1>
-      <p class="lead mb-4">Add a trip ... and EnjoY</p>
-  
+<div class="d-flex vh-100">
+  <!-- Sidebar -->
+  <div [class.d-none]="!sidebarOpen" class="bg-dark text-white p-3" style="width: 250px;">
+    <app-sidebar></app-sidebar>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-grow-1 p-4">
+    <!-- Toggle Button -->
+    <button class="btn btn-outline-dark mb-3" (click)="toggleSidebar()">
+      @if (!sidebarOpen) {
+        <i class="fas fa-bars fa-lg"></i> 
+      }
+      @else {
+        <i  class="fas fa-times fa-lg text-danger"></i>
+      }
+    </button>
     
-      <div class="m-2">
-        <button class="btn btn-outline-dark btn-lg" routerLink="/trips">View Available Trips</button>
+
+    <!-- Hero Section -->
+    <section class="hero d-flex align-items-center text-dark text-center">
+      <div class="container">
+        <h1 class="display-4 fw-bold">Welcome Admin</h1>
+        <p class="lead mb-4">Add a trip ... and EnjoY</p>
+
+        <div class="m-2">
+          <button class="btn btn-outline-dark btn-lg" routerLink="/trips">View Available Trips</button>
+        </div>
+        <div class="m-2">
+          <button class="btn btn-outline-dark btn-lg" routerLink="/add-trip">Add Trip</button>
+        </div>
       </div>
-      <div class="m-2">
-        <button class="btn btn-outline-dark btn-lg" routerLink="/add-trip">Add trip</button>
-      </div>
-    </div>
-  </section>
-  
+    </section>
+
+    <!-- Nested route content -->
+    <!-- <router-outlet></router-outlet> -->
+  </div>
+</div>

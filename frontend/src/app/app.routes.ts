@@ -11,6 +11,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { UserGuard } from './guards/user.guard';
 import { RegisterComponent } from './pages/register/register.component';
+import { BookingComponent } from './pages/booking/booking.component';
 
 export const routes: Routes = [
     {
@@ -56,6 +57,11 @@ export const routes: Routes = [
     {
         path:'register',
         component:RegisterComponent,
-    }
+    },
+    {
+        path: 'book-trip/:id',
+        component: BookingComponent
+      }
+      
     
 ];
