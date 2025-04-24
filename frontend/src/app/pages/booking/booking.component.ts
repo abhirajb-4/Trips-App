@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TripService } from '../../services/trip.service';
 import { CommonModule } from '@angular/common';
 import { BookingService } from '../../services/booking.service';
@@ -23,7 +23,8 @@ export class BookingComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
     this.bookingForm = this.fb.group({
       passengers: this.fb.array([])
@@ -75,36 +76,6 @@ export class BookingComponent implements OnInit {
     return this.passengers.length == this.availableSeats;
   }
 
-  // Method to trigger Razorpay payment
-  // payNow(): void {
-  //   const options: any = {
-  //     key: 'rzp_test_Va99OvjJU36gup', // Replace with your Razorpay Test Key ID
-  //     amount: this.totalCost() * 100, // Razorpay expects amount in paisa
-  //     currency: 'INR',
-  //     name: 'Bus Booking',
-  //     description: 'Trip Payment',
-  //     handler: (response: any) => {
-  //       // After successful payment, handle the response and submit to backend
-  //       const paymentResponse = {
-  //         razorpay_payment_id: response.razorpay_payment_id,
-  //         // razorpay_order_id: response.razorpay_order_id,
-  //         // razorpay_signature: response.razorpay_signature
-  //       };
-  //       console.log(paymentResponse);
-  //       this.submitBooking(paymentResponse);// Send booking + payment response to backend
-  //     },
-  //     prefill: {
-  //       name: this.passengers.at(0).value.name,
-  //       contact: this.passengers.at(0).value.phno
-  //     },
-  //     theme: {
-  //       color: '#3399cc'
-  //     }
-  //   };
-
-  //   const rzp = new (window as any).Razorpay(options);
-  //   rzp.open();
-  // }
   payNow(): void {
     const amount = this.totalCost();
   
@@ -139,14 +110,16 @@ export class BookingComponent implements OnInit {
   
 
   submitBooking(paymentResponse: any): void {
-    
     const payload = {
       payment: paymentResponse,
       booking: this.bookingForm.value,
       tripId: this.trip._id
     };
     this.bookingService.confirmBooking(payload).subscribe({
-      next: () => alert('Booking confirmed!'),
+      next: (() => {
+        alert('Booking confirmed!');
+        this.router.navigate(['/user/dashboard']);
+      }),
       error: (err) => {
         console.error('Booking error:', err);
         alert('Payment verification failed');

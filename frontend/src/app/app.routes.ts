@@ -60,7 +60,8 @@ export const routes: Routes = [
     },
     {
         path: 'book-trip/:id',
-        component: BookingComponent
+        component: BookingComponent,
+        canActivate:[AuthGuard,UserGuard],
       }
       
     

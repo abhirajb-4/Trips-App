@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
-const bookingRoutes = require('./routes/booking');
+const bookingRoutes = require('./routes/bookings');
 app.use('/api/booking', bookingRoutes);
 
 //Routes
