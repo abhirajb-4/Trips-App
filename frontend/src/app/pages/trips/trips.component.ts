@@ -21,6 +21,7 @@ export class TripsComponent {
         if (this.authService.isAdmin()) {
           this.trips = data;
         } else {
+          console.log(data);
           this.trips = data.filter(
             (trip:any) => trip.tripSchedule.capacity > trip.tripSchedule.enrolled
           );

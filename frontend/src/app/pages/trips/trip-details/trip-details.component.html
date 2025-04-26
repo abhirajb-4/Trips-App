@@ -1,11 +1,17 @@
-<div class="container bg-white p-4">
-  <h4 class="mb-4">Trip Details</h4>
+<div class="container bg-white p-4 rounded shadow mt-4">
+
+  <!-- Top Bar: Title & Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0 text-primary">Trip Details</h4>
+    <button class="btn btn-success px-4 fw-semibold" [routerLink]="['/book-trip', trip._id]">Book Now</button>
+  </div>
+
   <div class="row">
     <!-- Left Column -->
     <div class="col-md-6">
       <!-- Trip Info -->
-      <div class="card mb-3">
-        <div class="card-header">Trip Info</div>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">Trip Info</div>
         <div class="card-body">
           <p><strong>Name:</strong> {{ trip.tripInfo.tripName }}</p>
           <p><strong>Boarding Point:</strong> {{ trip.tripInfo.boardingPoint }}</p>
@@ -15,8 +21,8 @@
       </div>
 
       <!-- Trip Schedule -->
-      <div class="card mb-3">
-        <div class="card-header">Trip Schedule</div>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white">Trip Schedule</div>
         <div class="card-body">
           <p><strong>Start:</strong> {{ trip.tripSchedule.startDate }} {{ trip.tripSchedule.startTime }}</p>
           <p><strong>End:</strong> {{ trip.tripSchedule.endDate }} {{ trip.tripSchedule.endTime }}</p>
@@ -25,8 +31,8 @@
       </div>
 
       <!-- Trip Schedule Stops -->
-      <div class="card mb-3" *ngIf="trip.schedule?.length">
-        <div class="card-header">Trip Schedule Stops</div>
+      <div class="card border-0 shadow-sm mb-4" *ngIf="trip.schedule?.length">
+        <div class="card-header bg-info text-white">Trip Schedule Stops</div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item" *ngFor="let sch of trip.schedule; let i = index">
             <strong>{{ i + 1 }}.</strong> {{ sch.time }} → {{ sch.destination }}
@@ -38,8 +44,8 @@
     <!-- Right Column -->
     <div class="col-md-6">
       <!-- Bus Details -->
-      <div class="card mb-3">
-        <div class="card-header">Bus Details</div>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-dark text-white">Bus Details</div>
         <div class="card-body">
           <p><strong>Type:</strong> {{ trip.busDetails.busType }}</p>
           <p><strong>Number:</strong> {{ trip.busDetails.busNumber }}</p>
@@ -47,18 +53,13 @@
       </div>
 
       <!-- Contact Person -->
-      <div class="card mb-3">
-        <div class="card-header">Contact Person</div>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-warning text-dark">Contact Person</div>
         <div class="card-body">
           <p><strong>Name:</strong> {{ trip.contactPerson.name }}</p>
           <p><strong>Phone:</strong> {{ trip.contactPerson.phone }}</p>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="text-center mt-4">
-    <button class="btn btn-success px-4" [routerLink]="['/book-trip', trip._id]">Book Now</button>
-
   </div>
 </div>

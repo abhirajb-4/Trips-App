@@ -17,6 +17,10 @@ app.use('/api/booking', bookingRoutes);
 const tripRoutes = require('./routes/trips');
 app.use('/api/trips', tripRoutes);
 
+// //USER ROUTES
+// const userRoutes = require('./routes/user');
+// app.use('/api/user');
+
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
 }).then(() => {

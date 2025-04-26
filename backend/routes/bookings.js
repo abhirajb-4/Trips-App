@@ -11,7 +11,7 @@ const Booking = require('../models/BookingModel');  // Ensure this path is corre
 router.post('/confirm-booking',auth,isUser ,async (req, res) => {
     console.log('Received booking confirmation request:', req.body);
   try {
-    const { payment, booking, user } = req.body;
+    const { payment, booking } = req.body;
     const tripId = req.body.tripId;
     if (!payment || !booking) {
       return res.status(400).json({ success: false, message: "Missing payment or booking details" });

@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
 
 
 // Get all trips
-router.get('/', async (req, res) => {
+router.get('', async (req, res) => {
   try {
     const trips = await Trip.find();
     res.status(200).json(trips);

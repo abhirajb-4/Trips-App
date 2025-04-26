@@ -1,8 +1,22 @@
-<div class="bg-white shadow-lg p-2 mt-2 w-75 mx-auto">
-    <h2 class="text-black fs-4">{{ trip.tripInfo.tripName }}</h2>
-    <h3 class="text-black fs-6">Date : {{trip.tripSchedule.startDate}}</h3>
-    <h3 class="text-black fs-6">Costs : {{ trip.tripInfo.cost }}</h3>
-    <p>{{ trip._id }}</p>
-
-    <button class="btn btn-primary" [routerLink]="['/view-trip', trip._id]" >View details</button>
-</div>
+<div class="bg-light shadow rounded-4 p-4 mt-4 w-75 mx-auto border border-secondary-subtle">
+    <h2 class="text-primary-emphasis fs-4 fw-bold mb-3">{{ trip.tripInfo.tripName }}</h2>
+    
+    <div class="mb-2">
+      <i class="bi bi-calendar3 me-2 text-secondary"></i>
+      <span class="text-dark">Date:</span> 
+      <span class="text-muted">{{ trip.tripSchedule.startDate }}</span>
+    </div>
+    
+    <div class="mb-2">
+      <i class="bi bi-currency-rupee me-2 text-secondary"></i>
+      <span class="text-dark">Cost:</span> 
+      <span class="text-muted">{{ trip.tripInfo.cost }}</span>
+    </div>
+    
+    <div class="mb-3 small text-secondary-emphasis">Trip ID: {{ trip._id }}</div>
+  
+    <button class="btn btn-outline-primary px-4" [routerLink]="['/view-trip', trip._id]">
+      View Details
+    </button>
+  </div>
+  
