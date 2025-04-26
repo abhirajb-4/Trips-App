@@ -32,5 +32,9 @@ export class TripDetailsComponent implements OnInit {
     }
   }
 
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
   
 }

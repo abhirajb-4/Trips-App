@@ -31,4 +31,10 @@ export class BookingService {
       headers: this.getHeaders()
     });
   }
+
+  getAllBookings(): Observable<any>{
+    return this.http.get(`${this.bookingUrl}/getAllBookings`, {
+      headers: this.getHeaders()
+    });
+  }
 }

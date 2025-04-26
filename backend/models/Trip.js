@@ -5,12 +5,18 @@ const scheduleSchema = new mongoose.Schema({
   destination: String,
 });
 
+const passengerSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  gender: String
+});
+
 const tripSchema = new mongoose.Schema({
   tripInfo: {
     tripName: String,
     boardingPoint: String,
     destination: String,
-    cost:Number,
+    cost: Number,
   },
   tripSchedule: {
     startDate: String,
@@ -31,7 +37,11 @@ const tripSchema = new mongoose.Schema({
     name: String,
     phone: String,
   },
-  schedule: [scheduleSchema]
+  schedule: [scheduleSchema],
+  passengers: {
+    type: [passengerSchema],
+    default: null 
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Trip', tripSchema);

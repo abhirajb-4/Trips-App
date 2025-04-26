@@ -12,57 +12,73 @@ import { AdminGuard } from './guards/admin.guard';
 import { UserGuard } from './guards/user.guard';
 import { RegisterComponent } from './pages/register/register.component';
 import { BookingComponent } from './pages/booking/booking.component';
+import { AdminHomeComponent } from './pages/admin/admin-home/admin-home.component';
+import { BookingDetailsComponent } from './components/booking-details/booking-details.component';
+import {TripDetailComponent} from './components/trip-detail/trip-detail.component'
 
 export const routes: Routes = [
     {
-        path:'',
-        pathMatch:'full',
-        component:HomeComponent
+      path: '',
+      pathMatch: 'full',
+      component: HomeComponent,
     },
     {
-        path:'add-trip',
-        component : AddTripComponent,
-        canActivate:[AuthGuard,AdminGuard]
+      path: 'login',
+      component: LoginComponent,
     },
     {
-        path:'trips',
-        component:TripsComponent
+      path: 'register',
+      component: RegisterComponent,
     },
     {
-        path:'view-trip',
-        component:TripDetailsComponent
+      path: 'contact',
+      component: ContactComponent,
     },
     {
-        path:'view-trip/:id',
-        component:TripDetailsComponent
+      path: 'trips',
+      component: TripsComponent,
     },
     {
-        path:'contact',
-        component:ContactComponent
+      path: 'view-trip',
+      component: TripDetailsComponent,
     },
     {
-        path:'login',
-        component:LoginComponent
+      path: 'view-trip/:id',
+      component: TripDetailsComponent,
     },
     {
-        path:'admin/dashboard',
-        component:AdminComponent,
-        canActivate:[AuthGuard,AdminGuard]
+      path: 'book-trip/:id',
+      component: BookingComponent,
+      canActivate: [AuthGuard, UserGuard],
     },
+  
+    // Admin routes with children
     {
-        path:'user/dashboard',
-        component:UserComponent,
-        canActivate:[AuthGuard,UserGuard]
+      path: 'admin',
+      component: AdminComponent,
+      canActivate: [AuthGuard, AdminGuard],
+      children: [
+        { path: 'dashboard', component: AdminHomeComponent}, 
+        { path: 'add-trip', component: AddTripComponent },
+        { path: 'trips', component: TripsComponent },
+        { path: 'view-trip/:id', component: TripDetailsComponent},
+        {
+          path: 'view-trip',
+          component: TripDetailsComponent,
+        },
+        { path: 'getAllBookings', component: BookingDetailsComponent},
+        { path: 'getAlltrips' , component:TripDetailComponent}
+      ],
     },
+  
+    // User route (you can nest here if needed too)
     {
-        path:'register',
-        component:RegisterComponent,
-    },
-    {
-        path: 'book-trip/:id',
-        component: BookingComponent,
-        canActivate:[AuthGuard,UserGuard],
-      }
-      
-    
-];
+      path: 'user',
+      component: UserComponent,
+      canActivate: [AuthGuard, UserGuard],
+      children: [
+        { path: 'dashboard', component: UserComponent } // Add more children if needed
+      ]
+    }
+  ];
+  

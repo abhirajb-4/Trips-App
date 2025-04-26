@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <h4 class="mb-4 text-primary">All Trips</h4>
+
+  <div *ngFor="let trip of trips" class="card mb-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3"><strong>Trip Name:</strong> {{ trip.tripInfo.tripName }}</div>
+        <div class="col-md-3"><strong>Boarding:</strong> {{ trip.tripInfo.boardingPoint }}</div>
+        <div class="col-md-3"><strong>Destination:</strong> {{ trip.tripInfo.destination }}</div>
+        <div class="col-md-3"><strong>Start Date:</strong> {{ trip.tripSchedule.startDate }}</div>
+      </div>
+      <div class="mt-2">
+        <button class="btn btn-sm btn-info me-2" (click)="selected = trip; mode='passengers'">Passengers</button>
+        <button class="btn btn-sm btn-primary me-2" (click)="selected = trip; mode='trip'">Trip</button>
+        <button class="btn btn-sm btn-success" (click)="selected = trip; mode='schedule'">Schedule</button>
+      </div>
+
+      <!-- Details shown only for the selected trip -->
+      <div *ngIf="selected === trip" class="mt-3 border-top pt-3">
+        <div *ngIf="mode === 'passengers'">
+          <h5>Passenger Details</h5>
+          <ul *ngIf="trip.passengers?.length > 0; else noPassengers">
+            <li *ngFor="let p of trip.passengers">{{ p.name }} - Age: {{ p.age }}</li>
+          </ul>
+          <ng-template #noPassengers>
+            <p>No passengers enrolled yet.</p>
+          </ng-template>
+        </div>
+
+        <div *ngIf="mode === 'trip'">
+          <h5>Trip Details</h5>
+          <p><strong>Trip Name:</strong> {{ trip.tripInfo.tripName }}</p>
+          <p><strong>Boarding:</strong> {{ trip.tripInfo.boardingPoint }}</p>
+          <p><strong>Destination:</strong> {{ trip.tripInfo.destination }}</p>
+          <p><strong>Start:</strong> {{ trip.tripSchedule.startDate }} {{ trip.tripSchedule.startTime }}</p>
+          <p><strong>Bus Type:</strong> {{ trip.busDetails.busType }}</p>
+          <p><strong>Contact:</strong> {{ trip.contactPerson.name }} ({{ trip.contactPerson.phone }})</p>
+        </div>
+
+        <div *ngIf="mode === 'schedule'">
+          <h5>Trip Schedule</h5>
+          <ul>
+            <li *ngFor="let s of trip.schedule">
+              <strong>{{ s.time }}</strong> - {{ s.destination }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

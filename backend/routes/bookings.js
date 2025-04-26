@@ -9,7 +9,7 @@ const Booking = require('../models/BookingModel');  // Ensure this path is corre
 
 
 router.post('/confirm-booking',auth,isUser ,async (req, res) => {
-    console.log('Received booking confirmation request:', req.body);
+  //console.log('Headers:', req.headers);
   try {
     const { payment, booking } = req.body;
     const tripId = req.body.tripId;
@@ -22,11 +22,11 @@ router.post('/confirm-booking',auth,isUser ,async (req, res) => {
     const expectedSignature = crypto.createHmac('sha256', razorpay.key_secret)
       .update(body.toString())
       .digest('hex');
-    console.log('tip:',tripId);
+    
     const isAuthentic = expectedSignature === razorpay_signature;
     if (isAuthentic) {
       const newBooking = new Booking({
-        user: req.user._id,
+        user: req.user.id,
         trip: tripId,
         passengers: booking.passengers, // array of { name, age, gender }
         payment: {
@@ -40,7 +40,8 @@ router.post('/confirm-booking',auth,isUser ,async (req, res) => {
       console.log('newBooking', newBooking);
       await newBooking.save();
       await Trip.findByIdAndUpdate(tripId, {
-        $inc: { "tripSchedule.enrolled": booking.passengers.length }
+        $inc: { "tripSchedule.enrolled": booking.passengers.length },
+        $push: { passengers: { $each: booking.passengers } }
       });
       return res.status(200).json({ success: true, message: "Booking confirmed" });
     } else {
@@ -66,6 +67,51 @@ router.post('/create-order', async (req, res) => {
     res.json(order); // send order_id to frontend
   } catch (err) {
     res.status(500).send('Error creating Razorpay order');
+  }
+});
+
+// Get all bookings
+router.get('/getAllBookings', async (req, res) => {
+  try {
+    const bookings = await Booking.find()
+      .populate('user', 'name email')
+      .populate('trip');
+    res.status(200).json({ success: true, bookings });
+  } catch (error) {
+    console.error('❌ Error fetching all bookings:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Get single booking by ID
+router.get('getById/:id', async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+    const booking = await Booking.findById(bookingId)
+      .populate('user', 'name email')
+      .populate('trip');
+
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+
+    res.status(200).json({ success: true, booking });
+  } catch (error) {
+    console.error('❌ Error fetching booking:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+
+router.get('/users/:userId', async (req, res) => {
+  try {
+    const bookings = await Booking.find({ user: req.params.userId })
+      .populate('trip')
+      .populate('user', 'username email');
+
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch bookings' });
   }
 });
 

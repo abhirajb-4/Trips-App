@@ -1,9 +1,13 @@
-<div class="container bg-white p-4 rounded shadow mt-4">
+<div class="container bg-white p-4 rounded shadow mt-4" *ngIf="trip">
 
   <!-- Top Bar: Title & Button -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0 text-primary">Trip Details</h4>
-    <button class="btn btn-success px-4 fw-semibold" [routerLink]="['/book-trip', trip._id]">Book Now</button>
+    <ng-container *ngIf="!isAdmin()">
+      <button class="btn btn-success px-4 fw-semibold" [routerLink]="['/book-trip', trip?._id]">Book Now</button>
+    </ng-container>
+    
+    
   </div>
 
   <div class="row">

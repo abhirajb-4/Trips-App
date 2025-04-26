@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-admin',
-  imports: [RouterLink, SidebarComponent],
+  imports: [SidebarComponent,RouterOutlet],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
@@ -14,4 +14,13 @@ export class AdminComponent {
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
+
+  adminLinks = [
+    { label: 'Dashboard', path: '/admin/dashboard' },
+    { label: 'Add Trip', path: '/admin/add-trip' },
+    { label:'View Bookings',path:'/admin/getAllBookings'},
+    { label : 'Trips', path: '/admin/getAlltrips'}
+  ];
+  
+  
 }
