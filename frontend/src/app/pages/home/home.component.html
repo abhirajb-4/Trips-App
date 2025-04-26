@@ -1,21 +1,55 @@
-<!-- Hero Section with Search -->
-<section class="hero d-flex align-items-center text-dark text-center">
-    <div class="container">
-      <h1 class="display-4 fw-bold">Find Your Perfect Trip</h1>
-      <p class="lead mb-4">Search destinations, view available trips, and plan your journey.</p>
-  
-      <div class="row justify-content-center mb-3">
-        <div class="col-md-6">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search by destination..." />
-            <button class="btn btn-primary">Search</button>
+<!-- Hero Section with Search and Highlights -->
+<section class="hero d-flex align-items-center text-dark text-center py-5" style="background: linear-gradient(to right, #f8f9fa, #e9ecef); min-height: 100vh;">
+  <div class="container">
+    <h1 class="display-4 fw-bold mb-3 text-primary">Find Your Perfect Trip</h1>
+    <p class="lead mb-4 text-secondary">Explore exciting destinations, choose your journey, and travel with ease.</p>
+
+    <!-- Search Input -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-6">
+        <!-- <div class="input-group shadow-sm">
+          <input type="text" class="form-control form-control-lg" placeholder="Search by destination, trip name..." />
+          <button class="btn btn-primary btn-lg">Search</button>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="mb-5">
+      <button class="btn btn-outline-dark btn-lg shadow-sm" routerLink="/trips">View Available Trips</button>
+    </div>
+
+    <!-- Highlights -->
+    <div class="row text-start mt-5">
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title text-primary">🧭 Easy Planning</h5>
+            <p class="card-text text-muted">Browse curated trips with complete schedules, prices, and bus details. No hidden fees!</p>
           </div>
         </div>
       </div>
-  
-      <div>
-        <button class="btn btn-outline-dark btn-lg" routerLink="/trips">View Available Trips</button>
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title text-success">👥 Group Booking</h5>
+            <p class="card-text text-muted">Book for yourself or for friends and family. Add multiple passengers with ease.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title text-danger">💳 Secure Payments</h5>
+            <p class="card-text text-muted">Pay using secure gateways with instant confirmation. Your data is always safe.</p>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
-  
+
+    <!-- Trust Info -->
+    <div class="mt-5 text-muted">
+      <p>Trusted by 10,000+ travelers across the country.</p>
+    </div>
+  </div>
+</section>

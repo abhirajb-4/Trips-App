@@ -8,7 +8,7 @@ const scheduleSchema = new mongoose.Schema({
 const passengerSchema = new mongoose.Schema({
   name: String,
   age: Number,
-  gender: String
+  phno: String
 });
 
 const tripSchema = new mongoose.Schema({
@@ -40,7 +40,7 @@ const tripSchema = new mongoose.Schema({
   schedule: [scheduleSchema],
   passengers: {
     type: [passengerSchema],
-    default: null 
+    default: []  
   }
 }, { timestamps: true });
 

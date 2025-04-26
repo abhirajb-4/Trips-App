@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const passengerSchema = new mongoose.Schema({
   name: String,
   age: Number,
-  gender: String
+  phno: String
 });
 const paymentSchema = new mongoose.Schema({
   orderId: String,

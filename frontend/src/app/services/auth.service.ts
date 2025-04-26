@@ -25,6 +25,23 @@ export class AuthService {
     }
     return null;
   }
+  getCurrentUser(): any {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      console.log('Decoded Token Payload:', payload);
+      return {
+        _id: payload.id,
+        username: payload.username,
+        role: payload.role,
+      };
+    } catch (e) {
+      return null;
+    }
+  }
+
 
   isAdmin(): boolean {
     const token = this.getToken();

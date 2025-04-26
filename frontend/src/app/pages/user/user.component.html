@@ -1,70 +1,79 @@
 <div class="d-flex vh-100">
   <!-- Sidebar -->
   <div [class.d-none]="!sidebarOpen" class="bg-dark text-white p-3" style="width: 250px;">
-    <app-sidebar></app-sidebar>
+    <app-sidebar [links]="userLinks"></app-sidebar>
   </div>
 
   <!-- Main Content -->
   <div class="flex-grow-1 p-4">
     <!-- Toggle Button -->
     <button class="btn btn-outline-dark mb-3" (click)="toggleSidebar()">
-      <span *ngIf="!sidebarOpen" style="font-size: 1.5rem;">&#9776;</span>  <!-- Hamburger (≡) -->
-      <span *ngIf="sidebarOpen" style="color: red; font-size: 1.5rem;">&#10006;</span> <!-- Cross (✖) -->
+      <span *ngIf="!sidebarOpen" style="font-size: 1.5rem;">&#9776;</span>
+      <span *ngIf="sidebarOpen" style="color: red; font-size: 1.5rem;">&#10006;</span>
     </button>
-    
 
-    
-<!-- Hero Section with Search -->
-<section class="hero d-flex align-items-center text-dark text-center">
-  <div class="container">
-    <h1 class="display-4 fw-bold">Welcome User</h1>
-    <p class="lead mb-4">Book a trip ... and EnjoY</p>
-    <div class="m-2">
-      <button class="btn btn-outline-dark btn-lg" routerLink="/trips">BooK NoW</button>
-    </div>
-  </div>
-</section>
+    <!-- Booking Section -->
+    <div class="container mt-0">
+      <h4 class="mb-4 text-primary">My Bookings</h4>
 
-<!-- Enrolled Trips Section -->
-<section class="enrolled-trips py-5 bg-light text-center">
-  <div class="container">
-    <h2 class="mb-4">My Enrolled Trips</h2>
+      <table class="table table-bordered table-hover" *ngIf="trips.length > 0; else noTrips">
+        <thead class="table-dark">
+          <tr>
+            <th>Trip Name</th>
+            <th>Booked By</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let booking of trips">
+            <td>{{ booking.trip.tripInfo.tripName }}</td>
+            <td>{{ booking.passengers[0]?.name }}</td>
+            <td>{{ booking.createdAt | date:'shortDate' }}</td>
+            <td>
+              <button class="btn btn-sm btn-info me-2" (click)="selected = booking; mode='passengers'">Passengers</button>
+              <button class="btn btn-sm btn-primary me-2" (click)="selected = booking; mode='trip'">Trip</button>
+              <button class="btn btn-sm btn-success" (click)="selected = booking; mode='payment'">Payment</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div *ngIf="trips && trips.length > 0; else noTrips">
-      <div class="row">
-        <div class="col-md-4 mb-4" *ngFor="let trip of trips">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">{{ trip.tripInfo.tripName }}</h5>
-              <p class="card-text">
-                <strong>Destination:</strong> {{ trip.tripInfo.destination }}<br>
-                <strong>Date:</strong> {{ trip.tripSchedule.startDate | date }} to {{ trip.tripSchedule.endDate | date }}<br>
-                <strong>Price:</strong> ₹{{ trip.tripInfo.cost }}
-              </p>
+      <ng-template #noTrips>
+        <p class="text-muted text-center">You have not enrolled in any trips yet.</p>
+        <div class="text-center">
+          <button class="btn btn-primary p-2" routerLink="/trips">Book Now</button>
+        </div>
+      </ng-template>
+      
+
+      <div *ngIf="selected">
+        <div class="card mt-4">
+          <div class="card-header">
+            <strong *ngIf="mode === 'passengers'">Passenger Details</strong>
+            <strong *ngIf="mode === 'trip'">Trip Details</strong>
+            <strong *ngIf="mode === 'payment'">Payment Details</strong>
+          </div>
+          <div class="card-body">
+            <div *ngIf="mode === 'passengers'">
+              <ul>
+                <li *ngFor="let p of selected.passengers">{{ p.name }} - Age: {{ p.age }}</li>
+              </ul>
+            </div>
+            <div *ngIf="mode === 'trip'">
+              <p><strong>Boarding:</strong> {{ selected.trip.tripInfo.boardingPoint }}</p>
+              <p><strong>Destination:</strong> {{ selected.trip.tripInfo.destination }}</p>
+              <p><strong>Start:</strong> {{ selected.trip.tripSchedule.startDate }} {{ selected.trip.tripSchedule.startTime }}</p>
+              <p><strong>Bus Type:</strong> {{ selected.trip.busDetails.busType }}</p>
+            </div>
+            <div *ngIf="mode === 'payment'">
+              <p><strong>Order ID:</strong> {{ selected.payment.orderId }}</p>
+              <p><strong>Payment ID:</strong> {{ selected.payment.paymentId }}</p>
+              <p><strong>Status:</strong> {{ selected.payment.status }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <ng-template #noTrips>
-      <p class="text-muted">You have not enrolled in any trips yet.</p>
-    </ng-template>
-  </div>
-</section>
-
-    
-
-    <!-- Nested route content -->
-    <!-- <router-outlet></router-outlet> -->
   </div>
 </div>
-
-
-
-
-
-
-
-
-

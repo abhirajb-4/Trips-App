@@ -10,6 +10,7 @@ const Booking = require('../models/BookingModel');  // Ensure this path is corre
 
 router.post('/confirm-booking',auth,isUser ,async (req, res) => {
   //console.log('Headers:', req.headers);
+  console.log('Body:', req.body);
   try {
     const { payment, booking } = req.body;
     const tripId = req.body.tripId;
@@ -22,7 +23,7 @@ router.post('/confirm-booking',auth,isUser ,async (req, res) => {
     const expectedSignature = crypto.createHmac('sha256', razorpay.key_secret)
       .update(body.toString())
       .digest('hex');
-    
+    console.log(req.user.id);
     const isAuthentic = expectedSignature === razorpay_signature;
     if (isAuthentic) {
       const newBooking = new Booking({
@@ -37,7 +38,7 @@ router.post('/confirm-booking',auth,isUser ,async (req, res) => {
           status: "paid"
         }
       });
-      console.log('newBooking', newBooking);
+      //console.log('newBooking', newBooking);
       await newBooking.save();
       await Trip.findByIdAndUpdate(tripId, {
         $inc: { "tripSchedule.enrolled": booking.passengers.length },
@@ -114,5 +115,6 @@ router.get('/users/:userId', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch bookings' });
   }
 });
+
 
 module.exports = router;
