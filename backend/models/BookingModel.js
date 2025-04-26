@@ -5,7 +5,6 @@ const passengerSchema = new mongoose.Schema({
   age: Number,
   gender: String
 });
-
 const paymentSchema = new mongoose.Schema({
   orderId: String,
   paymentId: String,
@@ -17,8 +16,8 @@ const paymentSchema = new mongoose.Schema({
 const bookingSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   trip: { type: mongoose.Schema.Types.ObjectId, ref: 'Trip' },
-  passengers: [passengerSchema],
   payment: paymentSchema,
+  passengers:[passengerSchema],
   createdAt: { type: Date, default: Date.now }
 });
 

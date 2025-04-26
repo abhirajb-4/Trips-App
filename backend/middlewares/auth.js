@@ -6,6 +6,7 @@ const auth = (req, res, next) => {
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
   try {
     req.user = jwt.verify(token, SECRET);
+    console.log(req.user);
     next();
   } catch {
     res.status(403).json({ error: 'Invalid token' });

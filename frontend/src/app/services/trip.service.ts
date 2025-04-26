@@ -28,7 +28,7 @@ export class TripService {
     });
   }
 
-  getTrips(): Observable<any> {
+  getAllTrips(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
   getTripById(id: string): Observable<any> {

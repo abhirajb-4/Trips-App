@@ -16,7 +16,7 @@ export class TripsComponent {
   trips: any[] = [];
 
   ngOnInit(): void {
-    this.tripService.getTrips().subscribe({
+    this.tripService.getAllTrips().subscribe({
       next: (data) => {
         if (this.authService.isAdmin()) {
           this.trips = data;

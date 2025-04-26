@@ -1,0 +1,55 @@
+<div class="container mt-4">
+    <h4 class="mb-4 text-primary">All Bookings</h4>
+  
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Trip Name</th>
+          <th>Booked By</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings">
+          <td>{{ booking.trip.tripInfo.tripName }}</td>
+          <td>{{ booking.passengers[0]?.name }}</td>
+          <td>{{ booking.createdAt | date:'shortDate' }}</td>
+          <td>
+            <button class="btn btn-sm btn-info me-2" (click)="selected = booking; mode='passengers'">Passengers</button>
+            <button class="btn btn-sm btn-primary me-2" (click)="selected = booking; mode='trip'">Trip</button>
+            <button class="btn btn-sm btn-success" (click)="selected = booking; mode='payment'">Payment</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="selected">
+      <div class="card mt-4">
+        <div class="card-header">
+          <strong *ngIf="mode === 'passengers'">Passenger Details</strong>
+          <strong *ngIf="mode === 'trip'">Trip Details</strong>
+          <strong *ngIf="mode === 'payment'">Payment Details</strong>
+        </div>
+        <div class="card-body">
+          <div *ngIf="mode === 'passengers'">
+            <ul>
+              <li *ngFor="let p of selected.passengers">{{ p.name }} - Age: {{ p.age }}</li>
+            </ul>
+          </div>
+          <div *ngIf="mode === 'trip'">
+            <p><strong>Boarding:</strong> {{ selected.trip.tripInfo.boardingPoint }}</p>
+            <p><strong>Destination:</strong> {{ selected.trip.tripInfo.destination }}</p>
+            <p><strong>Start:</strong> {{ selected.trip.tripSchedule.startDate }} {{ selected.trip.tripSchedule.startTime }}</p>
+            <p><strong>Bus Type:</strong> {{ selected.trip.busDetails.busType }}</p>
+          </div>
+          <div *ngIf="mode === 'payment'">
+            <p><strong>Order ID:</strong> {{ selected.payment.orderId }}</p>
+            <p><strong>Payment ID:</strong> {{ selected.payment.paymentId }}</p>
+            <p><strong>Status:</strong> {{ selected.payment.status }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
