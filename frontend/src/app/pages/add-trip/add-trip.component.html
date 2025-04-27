@@ -38,6 +38,14 @@
           <input type="date" formControlName="endDate" class="form-control">
         </div>
       </div>
+      <div *ngIf="tripForm.get('tripSchedule')?.errors?.['startDateInPast'] && (tripForm.get('tripSchedule')?.touched || tripForm.get('tripSchedule')?.dirty)" class="text-danger mt-2">
+        Start date must be today or a future date.
+      </div>
+      
+      <div *ngIf="tripForm.get('tripSchedule')?.errors?.['dateRangeInvalid'] && (tripForm.get('tripSchedule')?.touched || tripForm.get('tripSchedule')?.dirty)" class="text-danger mt-2">
+        Start date must be before or same as end date.
+      </div>
+      
       <div class="mt-3">
         <label>End Time</label>
         <input type="time" formControlName="endTime" class="form-control">

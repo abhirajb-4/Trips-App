@@ -3,6 +3,33 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TripService } from '../../services/trip.service';
 import { Router, RouterLink } from '@angular/router';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
+function dateRangeValidator(control: AbstractControl): ValidationErrors | null {
+  const startDate = control.get('startDate')?.value;
+  const endDate = control.get('endDate')?.value;
+
+  if (!startDate || !endDate) return null;
+
+  const today = new Date();
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  // Reset time to 00:00:00 to compare only dates
+  today.setHours(0, 0, 0, 0);
+  start.setHours(0, 0, 0, 0);
+  end.setHours(0, 0, 0, 0);
+
+  if (start < today) {
+    return { startDateInPast: true };
+  }
+
+  if (start > end) {
+    return { dateRangeInvalid: true };
+  }
+
+  return null;
+}
 
 @Component({
   selector: 'app-add-trip',
@@ -30,7 +57,7 @@ export class AddTripComponent {
         endDate: ['', Validators.required],
         endTime: ['', Validators.required],
         capacity: [null, [Validators.required, Validators.min(1)]],
-      }),
+      }, { validators: dateRangeValidator }),
       busDetails: this.fb.group({
         busType: ['', Validators.required],
         busNumber: ['', Validators.required],
