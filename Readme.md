@@ -1,35 +1,52 @@
-# Trip Booking App - Full Documentation
+# 🧳 Trip Booking App - Full Documentation
 
-## Project Overview
+## 🔑 Default Admin Credentials
+
+| Username | Password   |
+|----------|------------|
+| admin    | admin123   |
+
+
+---
+
+## 📌 Project Overview
 Trip Booking App is a full-stack web application that allows users to browse trips, book trips for multiple passengers, and make payments securely using Razorpay. Admins can manage trips and view all bookings.
 
-## Tech Stack
+## ⚙️ Tech Stack
+
 - **Frontend:** Angular / React  
 - **Backend:** Node.js, Express.js  
 - **Database:** MongoDB + Mongoose  
 - **Authentication:** JWT  
 - **Payment Gateway:** Razorpay  
-- **Deployment:** Docker / Render / Vercel (if any)
+- **Deployment:** Docker / Render / Vercel (optional)
 
-## Authentication & Roles
+---
+
+## 🔐 Authentication & Roles
+
 - **JWT-based login**
 - **Roles:** `admin`, `user`
 - **Middlewares:** `auth`, `isAdmin`, `isUser`
 
-## Core Features
+---
 
-### User:
+## ✨ Core Features
+
+### 👤 User:
 - Register/Login  
 - Browse trips  
 - Book trip with multiple passengers  
 - Razorpay payment  
 - View booking history  
 
-### Admin:
+### 🛠️ Admin:
 - Manage trips (CRUD)  
 - View all bookings  
 
-## Booking Flow with Razorpay
+---
+
+## 💳 Booking Flow with Razorpay
 
 1. User selects trip and fills passenger form  
 2. Frontend calls `POST /create-order`  
@@ -37,7 +54,9 @@ Trip Booking App is a full-stack web application that allows users to browse tri
 4. Frontend calls `POST /confirm-booking`  
 5. Server verifies payment, saves booking, updates trip enrolled count  
 
-## API Endpoints
+---
+
+## 📡 API Endpoints
 
 ### 🔐 Auth
 - `POST /api/auth/register`  
@@ -57,10 +76,16 @@ Trip Booking App is a full-stack web application that allows users to browse tri
 - `GET /api/bookings/all` – Admin: get all bookings  
 - `GET /api/bookings/:id` – Get a specific booking  
 
-## Setup Instructions
+---
+
+## 🚀 Setup Instructions
 
 ```bash
 git clone <repo-url>
 cd trip-booking-app
+cd frontend
+npm install
+npm run dev
+cd backend
 npm install
 npm run dev
