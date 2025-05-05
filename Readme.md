@@ -78,6 +78,9 @@ Trip Booking App is a full-stack web application that allows users to browse tri
 
 ---
 
+## Diagram
+![Trip Booking App Diagram](./diagram.png)  
+
 ## 🚀 Setup Instructions
 
 ```bash
