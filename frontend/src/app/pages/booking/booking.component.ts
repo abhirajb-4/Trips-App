@@ -82,7 +82,7 @@ export class BookingComponent implements OnInit {
     // Call backend to create order
     this.bookingService.createOrder({ amount }).subscribe(order => {
       const options: any = {
-        key: 'rzp_test_Va99OvjJU36gup',
+        key: 'rzp_test_69kRzvitkm0bu3',
         amount: order.amount,
         currency: order.currency,
         name: 'Bus Booking',
